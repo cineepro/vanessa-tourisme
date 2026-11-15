@@ -1,0 +1,38 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Les variables VITE_* finissent volontairement dans le bundle public
+  # (endpoint, project id...). On evite que le scan de secrets Netlify
+  # fasse echouer le build a cause d'elles.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_APPWRITE_ENDPOINT,VITE_APPWRITE_PROJECT_ID,VITE_APPWRITE_DATABASE_ID,VITE_APP_URL,VITE_VANESSA_APP_URL,VITE_FN_TOUR_CHAT,VITE_FN_CREATE_BOOKING,VITE_FN_BOOKING_STATUS,VITE_FN_REVIEW,VITE_MAP_STYLE_URL"
+
+# Application monopage : toutes les routes renvoient index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# En-tetes de securite
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # La geolocalisation est necessaire au mode "compagnon de sejour"
+    Permissions-Policy = "geolocation=(self), camera=(), microphone=()"
+
+# Cache long pour les fichiers generes par Vite (noms hashes)
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Pas de cache pour le point d'entree
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"

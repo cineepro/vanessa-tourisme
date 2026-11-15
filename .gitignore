@@ -1,0 +1,37 @@
+# Dependances
+node_modules/
+functions/**/node_modules/
+
+# Build
+dist/
+dist-ssr/
+*.tsbuildinfo
+.tmp/
+
+# Secrets / environnement
+.env
+.env.*
+!.env.example
+
+# Netlify
+.netlify/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editeurs / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.sw?
+
+# Archives de deploiement des functions
+functions/**/*.tar.gz
