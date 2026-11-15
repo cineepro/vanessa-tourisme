@@ -60,6 +60,7 @@ export interface NearbyPlacesQuery {
   lng: number
   radiusKm?: number
   types?: PlaceType[]
-  openNow?: boolean
+  /** Ne garder que les lieux avec service d'urgence */
+  emergencyOnly?: boolean
   limit?: number
 }

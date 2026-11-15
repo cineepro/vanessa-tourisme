@@ -11,6 +11,7 @@ import {
   Query,
   Role,
   Storage,
+  Teams,
 } from 'appwrite'
 
 import { env } from '@/config/env'
@@ -27,6 +28,7 @@ export const account = new Account(client)
 export const databases = new Databases(client)
 export const storage = new Storage(client)
 export const functions = new Functions(client)
+export const teams = new Teams(client)
 
 export const DATABASE_ID = env.databaseId
 
@@ -250,4 +252,17 @@ export async function executeFunction<TResult>(
   }
 
   return parsed.data as TResult
+}
+
+/* ------------------------------------------------------------
+   Helpers de requetes
+------------------------------------------------------------ */
+/** Query.or exige au moins 2 requetes : on renvoie la requete seule sinon. */
+export function anyOf(queries: string[]): string {
+  return queries.length === 1 ? queries[0] : Query.or(queries)
+}
+
+/** Requete de proximite : un des prefixes geohash (voir geohashPrefixesForRadius). */
+export function geohashQuery(prefixes: string[], attribute = 'geohash'): string {
+  return anyOf(prefixes.map((prefix) => Query.startsWith(attribute, prefix)))
 }
