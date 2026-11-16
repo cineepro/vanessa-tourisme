@@ -1,3 +1,4 @@
+// src/config/appwrite-ids.ts — Vanessa Tourisme
 import { env } from './env'
 
 /**
@@ -6,7 +7,7 @@ import { env } from './env'
  * `users` est la collection PARTAGEE avec Vanessa (jamais modifiee ici).
  */
 export const COLLECTIONS = {
-  users: 'users',
+  users: env.collectionUsers,
 
   agencies: 'tour_agencies',
   profiles: 'tour_profiles',

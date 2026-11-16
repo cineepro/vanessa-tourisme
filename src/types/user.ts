@@ -1,3 +1,4 @@
+// src/types/user.ts — Vanessa Tourisme
 import type { BaseDoc, Language } from './index'
 
 /** Role applicatif deduit des labels / teams du compte. */
@@ -21,8 +22,12 @@ export interface SessionUser {
  * Ne jamais ajouter d'attribut tourisme ici (voir TouristProfile).
  */
 export interface UserDoc extends BaseDoc {
+  userId?: string
   name?: string | null
   email?: string | null
+  phone?: string | null
+  isBanned?: boolean
+  isModerator?: boolean
   [key: string]: unknown
 }
 

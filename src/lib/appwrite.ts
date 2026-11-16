@@ -1,3 +1,7 @@
+// src/lib/appwrite.ts — Vanessa Tourisme
+// Même projet Appwrite que Vanessa : comptes, sessions et collection `users`
+// partagés. Les appels au SDK utilisent la forme POSITIONNELLE, comme dans
+// le code de Vanessa (src/api/appwrite.ts), pour rester compatibles.
 import {
   Account,
   AppwriteException,
@@ -18,7 +22,7 @@ import { env } from '@/config/env'
 import type { BaseDoc, FunctionResponse, ListResult } from '@/types'
 
 /* ------------------------------------------------------------
-   Client Appwrite (meme projet que Vanessa : comptes partages)
+   Client Appwrite
 ------------------------------------------------------------ */
 export const client = new Client()
   .setEndpoint(env.appwriteEndpoint)
@@ -59,8 +63,6 @@ export function getErrorMessage(error: unknown): string {
         return 'Email ou mot de passe incorrect.'
       case 'user_already_exists':
         return 'Un compte existe déjà avec cet email.'
-      case 'user_session_already_exists':
-        return 'Vous êtes déjà connecté.'
       case 'password_recently_used':
       case 'password_personal_data':
         return 'Ce mot de passe n’est pas assez sûr. Choisissez-en un autre.'
@@ -100,18 +102,13 @@ export function getErrorMessage(error: unknown): string {
 
 /* ------------------------------------------------------------
    Documents
-   Tous les appels a la base passent par ces helpers : si la
-   signature du SDK change, seul ce fichier est a adapter.
+   Tous les appels à la base passent par ces helpers.
 ------------------------------------------------------------ */
 export async function listDocuments<T extends BaseDoc>(
   collectionId: string,
   queries: string[] = [],
 ): Promise<ListResult<T>> {
-  const res = await databases.listDocuments({
-    databaseId: DATABASE_ID,
-    collectionId,
-    queries,
-  })
+  const res = await databases.listDocuments(DATABASE_ID, collectionId, queries)
   return { total: res.total, documents: res.documents as unknown as T[] }
 }
 
@@ -120,12 +117,7 @@ export async function getDocument<T extends BaseDoc>(
   documentId: string,
   queries: string[] = [],
 ): Promise<T> {
-  const doc = await databases.getDocument({
-    databaseId: DATABASE_ID,
-    collectionId,
-    documentId,
-    queries,
-  })
+  const doc = await databases.getDocument(DATABASE_ID, collectionId, documentId, queries)
   return doc as unknown as T
 }
 
@@ -134,13 +126,13 @@ export async function createDocument<T extends BaseDoc>(
   data: Record<string, unknown>,
   options: { documentId?: string; permissions?: string[] } = {},
 ): Promise<T> {
-  const doc = await databases.createDocument({
-    databaseId: DATABASE_ID,
+  const doc = await databases.createDocument(
+    DATABASE_ID,
     collectionId,
-    documentId: options.documentId ?? ID.unique(),
+    options.documentId ?? ID.unique(),
     data,
-    permissions: options.permissions,
-  })
+    options.permissions,
+  )
   return doc as unknown as T
 }
 
@@ -150,29 +142,22 @@ export async function updateDocument<T extends BaseDoc>(
   data: Record<string, unknown>,
   permissions?: string[],
 ): Promise<T> {
-  const doc = await databases.updateDocument({
-    databaseId: DATABASE_ID,
+  const doc = await databases.updateDocument(
+    DATABASE_ID,
     collectionId,
     documentId,
     data,
     permissions,
-  })
+  )
   return doc as unknown as T
 }
 
-export async function deleteDocument(
-  collectionId: string,
-  documentId: string,
-): Promise<void> {
-  await databases.deleteDocument({
-    databaseId: DATABASE_ID,
-    collectionId,
-    documentId,
-  })
+export async function deleteDocument(collectionId: string, documentId: string): Promise<void> {
+  await databases.deleteDocument(DATABASE_ID, collectionId, documentId)
 }
 
 /* ------------------------------------------------------------
-   Fichiers (URLs construites a la main : stables et sans appel SDK)
+   Fichiers (URLs construites à la main : stables et sans appel SDK)
 ------------------------------------------------------------ */
 interface PreviewOptions {
   width?: number
@@ -180,7 +165,7 @@ interface PreviewOptions {
   quality?: number
 }
 
-/** URL d'une image redimensionnee (webp). Renvoie null si pas de fichier. */
+/** URL d'une image redimensionnée (webp). Renvoie null si pas de fichier. */
 export function filePreviewUrl(
   bucketId: string,
   fileId: string | null | undefined,
@@ -208,7 +193,7 @@ export function fileViewUrl(
 
 /* ------------------------------------------------------------
    Functions
-   Convention de reponse de TOUTES nos functions :
+   Convention de réponse de TOUTES nos functions :
      { ok: true,  data: ... }
      { ok: false, error: "message", code?: "CODE" }
 ------------------------------------------------------------ */
@@ -217,14 +202,14 @@ export async function executeFunction<TResult>(
   payload: unknown = {},
   options: { path?: string; method?: ExecutionMethod } = {},
 ): Promise<TResult> {
-  const execution = await functions.createExecution({
+  const execution = await functions.createExecution(
     functionId,
-    body: JSON.stringify(payload),
-    async: false,
-    xpath: options.path ?? '/',
-    method: options.method ?? ExecutionMethod.POST,
-    headers: { 'content-type': 'application/json' },
-  })
+    JSON.stringify(payload),
+    false,
+    options.path ?? '/',
+    options.method ?? ExecutionMethod.POST,
+    { 'content-type': 'application/json' },
+  )
 
   let parsed: FunctionResponse<TResult> | null = null
   try {
@@ -255,14 +240,14 @@ export async function executeFunction<TResult>(
 }
 
 /* ------------------------------------------------------------
-   Helpers de requetes
+   Helpers de requêtes
 ------------------------------------------------------------ */
-/** Query.or exige au moins 2 requetes : on renvoie la requete seule sinon. */
+/** Query.or exige au moins 2 requêtes : on renvoie la requête seule sinon. */
 export function anyOf(queries: string[]): string {
   return queries.length === 1 ? queries[0] : Query.or(queries)
 }
 
-/** Requete de proximite : un des prefixes geohash (voir geohashPrefixesForRadius). */
+/** Requête de proximité : un des préfixes geohash (voir geohashPrefixesForRadius). */
 export function geohashQuery(prefixes: string[], attribute = 'geohash'): string {
   return anyOf(prefixes.map((prefix) => Query.startsWith(attribute, prefix)))
 }

@@ -1,3 +1,4 @@
+// src/services/storage.service.ts — Vanessa Tourisme
 import { BUCKETS } from '@/config/appwrite-ids'
 import { filePreviewUrl, fileViewUrl, ID, storage, AppError } from '@/lib/appwrite'
 import type { Agency, Article, Guide, Review, Site } from '@/types'
@@ -72,14 +73,10 @@ export async function uploadReviewPhoto(file: File): Promise<string> {
   const problem = validateImageFile(file)
   if (problem) throw new AppError(problem, 'INVALID_FILE')
 
-  const uploaded = await storage.createFile({
-    bucketId: BUCKETS.reviews,
-    fileId: ID.unique(),
-    file,
-  })
+  const uploaded = await storage.createFile(BUCKETS.reviews, ID.unique(), file)
   return uploaded.$id
 }
 
 export async function deleteReviewPhoto(fileId: string): Promise<void> {
-  await storage.deleteFile({ bucketId: BUCKETS.reviews, fileId })
+  await storage.deleteFile(BUCKETS.reviews, fileId)
 }

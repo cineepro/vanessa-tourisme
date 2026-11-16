@@ -18,7 +18,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 900,
     rollupOptions: {
       output: {
-        // Separe les grosses librairies pour un meilleur cache navigateur
+        // Sépare les grosses librairies pour un meilleur cache navigateur
         manualChunks: {
           react: ['react', 'react-dom', 'react-router-dom'],
           appwrite: ['appwrite'],

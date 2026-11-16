@@ -1,3 +1,4 @@
+// src/config/constants.ts — Vanessa Tourisme
 import type {
   ArticleType,
   BookingStatus,
@@ -361,3 +362,53 @@ export const CHAT_QUICK_PROMPTS: Record<ChatMode, string[]> = {
     'J’ai perdu mon passeport, que dois-je faire ?',
   ],
 }
+
+/* ------------------------------------------------------------
+   Routes de l'application
+------------------------------------------------------------ */
+export const ROUTES = {
+  home: '/',
+  sites: '/sites',
+  site: (slug: string) => `/sites/${slug}`,
+  guides: '/guides',
+  guide: (slug: string) => `/guides/${slug}`,
+  discover: '/decouvrir',
+  article: (slug: string) => `/decouvrir/${slug}`,
+  practical: '/infos-pratiques',
+  about: '/a-propos',
+  terms: '/terms',
+  privacy: '/privacy',
+
+  // Authentification (mêmes chemins que Vanessa)
+  login: '/login',
+  register: '/register',
+  forgotPassword: '/forgot-password',
+  resetPassword: '/reset-password',
+  verifyEmail: '/verify-email',
+  emailConfirmed: '/email-confirmed',
+  oauthCallback: '/oauth-callback',
+
+  // Espace voyageur (connexion requise)
+  chat: '/vanessa',
+  book: (offerId: string) => `/reserver/${offerId}`,
+  bookings: '/mes-reservations',
+  booking: (id: string) => `/mes-reservations/${id}`,
+  favorites: '/favoris',
+  profile: '/profil',
+  notifications: '/notifications',
+
+  // Espace agence
+  agency: '/agence',
+} as const
+
+/* ------------------------------------------------------------
+   Numéros d'urgence du Bénin
+   Source : liste officielle des numéros courts publiée par l'ARCEP Bénin.
+   Seuls les numéros confirmés par toutes les sources consultées sont
+   affichés. A revérifier de temps en temps sur arcep.bj.
+------------------------------------------------------------ */
+export const EMERGENCY_NUMBERS = [
+  { label: 'SAMU (urgences médicales)', number: '112' },
+  { label: 'Sapeurs-pompiers', number: '118' },
+  { label: 'Police', number: '117' },
+] as const

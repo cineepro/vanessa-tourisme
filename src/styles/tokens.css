@@ -1,0 +1,53 @@
+/* src/styles/tokens.css — Vanessa Tourisme */
+/*
+ * Jetons de design (miroir CSS de tailwind.config.js).
+ * Utiles hors Tailwind : styles de la carte, e-mails, exports PDF, etc.
+ * Palette tirée du drapeau béninois : vert, jaune, rouge.
+ */
+:root {
+  /* Vert : couleur principale */
+  --vt-primary-50: #eefbf3;
+  --vt-primary-100: #d6f5e3;
+  --vt-primary-200: #b0eaca;
+  --vt-primary-500: #1fa56b;
+  --vt-primary-600: #008751;
+  --vt-primary-700: #006e44;
+  --vt-primary-900: #084730;
+
+  /* Jaune : accent */
+  --vt-accent-300: #ffe047;
+  --vt-accent-400: #fcd116;
+  --vt-accent-500: #e3b705;
+
+  /* Rouge : alertes et urgences */
+  --vt-danger-600: #e8112d;
+  --vt-danger-700: #c00d24;
+
+  /* Neutres chauds (sable) */
+  --vt-sable-50: #faf8f4;
+  --vt-sable-100: #f3efe6;
+  --vt-sable-200: #e6dfd0;
+  --vt-sable-300: #d3c8b3;
+  --vt-sable-500: #9c8c70;
+  --vt-sable-700: #665a49;
+  --vt-sable-900: #2b261f;
+
+  /* Typographie */
+  --vt-font-display: 'Bricolage Grotesque Variable', ui-sans-serif, system-ui, sans-serif;
+  --vt-font-sans: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+
+  /* Formes et ombres */
+  --vt-radius-md: 1rem;
+  --vt-radius-lg: 1.5rem;
+  --vt-radius-pill: 9999px;
+  --vt-shadow-card: 0 1px 2px rgba(43, 38, 31, 0.06), 0 8px 24px rgba(43, 38, 31, 0.08);
+  --vt-shadow-lift: 0 4px 6px rgba(43, 38, 31, 0.07), 0 18px 40px rgba(43, 38, 31, 0.14);
+}
+
+/* Fenêtre d'information de la carte (MapLibre) aux couleurs du site */
+.maplibregl-popup-content {
+  border-radius: var(--vt-radius-md);
+  box-shadow: var(--vt-shadow-lift);
+  font-family: var(--vt-font-sans);
+  padding: 0.5rem 0.75rem;
+}

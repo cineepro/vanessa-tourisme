@@ -23,6 +23,7 @@
     "forceConsistentCasingInFileNames": true,
 
     /* Alias : import { x } from '@/lib/appwrite' */
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },

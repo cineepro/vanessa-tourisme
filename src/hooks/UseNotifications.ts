@@ -1,97 +1,39 @@
-import { useCallback, useEffect, useState } from 'react'
+// src/hooks/useNotifications.ts — Vanessa Tourisme
+import { useCallback, useEffect } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 
-import { getErrorMessage } from '@/lib/appwrite'
-import {
-  countUnread,
-  listNotifications,
-  markAllAsRead as markAllAsReadService,
-  markAsRead as markAsReadService,
-  subscribeToNotifications,
-} from '@/services/notifications.service'
 import { useAuthStore } from '@/store/auth.store'
-import { toast } from '@/store/ui.store'
-import type { AppNotification } from '@/types'
+import { acquireNotifications, useNotificationsStore } from '@/store/notifications.store'
 
 /**
- * Notifications du touriste, avec temps reel.
- * A utiliser une seule fois (par exemple dans la barre de navigation) pour
- * ne pas ouvrir plusieurs abonnements ; la page des notifications peut
- * recevoir les donnees en props.
+ * Notifications du touriste avec temps réel.
+ * Peut être utilisé dans plusieurs composants (barre de navigation, page des
+ * notifications) : l'état est partagé et il n'y a qu'un seul abonnement.
  */
-export function useNotifications(options: { limit?: number } = {}) {
-  const { limit = 30 } = options
+export function useNotifications() {
   const userId = useAuthStore((s) => s.user?.id)
-
-  const [notifications, setNotifications] = useState<AppNotification[]>([])
-  const [unreadCount, setUnreadCount] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (!userId) {
-      setNotifications([])
-      setUnreadCount(0)
+      useNotificationsStore.getState().reset()
       return
     }
+    return acquireNotifications(userId)
+  }, [userId])
 
-    let cancelled = false
-    setIsLoading(true)
-
-    Promise.all([listNotifications(userId, { limit }), countUnread(userId)])
-      .then(([list, unread]) => {
-        if (cancelled) return
-        setNotifications(list)
-        setUnreadCount(unread)
-      })
-      .catch((error: unknown) => console.warn('[notifications]', getErrorMessage(error)))
-      .finally(() => {
-        if (!cancelled) setIsLoading(false)
-      })
-
-    const unsubscribe = subscribeToNotifications(userId, (notification) => {
-      setNotifications((current) => [notification, ...current].slice(0, limit))
-      setUnreadCount((count) => count + 1)
-      toast.info(notification.title, notification.body ?? undefined)
-    })
-
-    return () => {
-      cancelled = true
-      unsubscribe()
-    }
-  }, [userId, limit])
-
-  const markAsRead = useCallback(
-    async (id: string) => {
-      const target = notifications.find((n) => n.$id === id)
-      if (!target || target.isRead) return
-
-      setNotifications((current) => current.map((n) => (n.$id === id ? { ...n, isRead: true } : n)))
-      setUnreadCount((count) => Math.max(0, count - 1))
-      try {
-        await markAsReadService(id)
-      } catch (error) {
-        setNotifications((current) => current.map((n) => (n.$id === id ? { ...n, isRead: false } : n)))
-        setUnreadCount((count) => count + 1)
-        toast.error('Action impossible', getErrorMessage(error))
-      }
-    },
-    [notifications],
+  const state = useNotificationsStore(
+    useShallow((s) => ({
+      notifications: s.notifications,
+      unreadCount: s.unreadCount,
+      isLoading: s.isLoading,
+      markAsRead: s.markAsRead,
+    })),
   )
+  const markAll = useNotificationsStore((s) => s.markAllAsRead)
 
   const markAllAsRead = useCallback(async () => {
-    if (!userId || unreadCount === 0) return
-    const snapshot = notifications
-    const previousCount = unreadCount
+    if (userId) await markAll(userId)
+  }, [markAll, userId])
 
-    setNotifications((current) => current.map((n) => ({ ...n, isRead: true })))
-    setUnreadCount(0)
-    try {
-      await markAllAsReadService(userId)
-    } catch (error) {
-      setNotifications(snapshot)
-      setUnreadCount(previousCount)
-      toast.error('Action impossible', getErrorMessage(error))
-    }
-  }, [notifications, unreadCount, userId])
-
-  return { notifications, unreadCount, isLoading, markAsRead, markAllAsRead }
+  return { ...state, markAllAsRead }
 }
