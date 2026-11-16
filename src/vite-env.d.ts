@@ -18,3 +18,6 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+/** Les polices Fontsource ne sont que du CSS : on les déclare pour TypeScript 6. */
+declare module '@fontsource-variable/*'

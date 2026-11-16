@@ -22,8 +22,7 @@
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
 
-    /* Alias : import { x } from '@/lib/appwrite' */
-    "baseUrl": ".",
+       /* Alias : import { x } from '@/lib/appwrite' */
     "paths": {
       "@/*": ["./src/*"]
     },

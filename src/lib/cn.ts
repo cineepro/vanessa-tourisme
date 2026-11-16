@@ -1,6 +1,8 @@
+// src/lib/cn.ts — Vanessa Tourisme
 export type ClassValue =
   | string
   | number
+  | bigint
   | boolean
   | null
   | undefined

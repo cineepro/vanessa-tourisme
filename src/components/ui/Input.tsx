@@ -41,7 +41,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
             'h-12 w-full rounded-2xl border bg-white px-4 text-base text-sable-900 placeholder:text-sable-400',
             'transition-colors focus:border-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-600/20',
             'disabled:cursor-not-allowed disabled:bg-sable-100',
-            leftIcon && 'pl-11',
+            leftIcon ? 'pl-11' : undefined,
             error ? 'border-danger-500' : 'border-sable-300',
             className,
           )}

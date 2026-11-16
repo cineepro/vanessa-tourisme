@@ -1,6 +1,6 @@
 // src/components/sites/SiteMap.tsx — Vanessa Tourisme
 import { useEffect, useRef, useState } from 'react'
-import maplibregl from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
 import type { Map as MapLibreMap, Marker as MapLibreMarker } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
