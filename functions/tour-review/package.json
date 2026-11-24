@@ -1,0 +1,8 @@
+{
+  "name": "tour-review",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vanessa Tourisme : création, modération et réponse aux avis, recalcul des notes.",
+  "main": "src/main.js"
+}

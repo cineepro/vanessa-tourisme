@@ -1,0 +1,8 @@
+{
+  "name": "tour-notify",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vanessa Tourisme : notifications dans l'application et e-mails (déclenché par les réservations).",
+  "main": "src/main.js"
+}

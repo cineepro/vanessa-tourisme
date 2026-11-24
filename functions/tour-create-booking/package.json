@@ -1,0 +1,8 @@
+{
+  "name": "tour-create-booking",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vanessa Tourisme : crée une réservation (prix, disponibilité et règles calculés côté serveur).",
+  "main": "src/main.js"
+}

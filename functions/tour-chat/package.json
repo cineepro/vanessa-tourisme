@@ -1,0 +1,8 @@
+{
+  "name": "tour-chat",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vanessa Tourisme : discussion avec Vanessa (contexte tourisme, quota, historique).",
+  "main": "src/main.js"
+}

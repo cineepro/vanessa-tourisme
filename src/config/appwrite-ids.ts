@@ -2,37 +2,36 @@
 import { env } from './env'
 
 /**
- * IDs des collections et buckets Appwrite.
- * Les collections tourisme sont prefixees `tour_`.
- * `users` est la collection PARTAGEE avec Vanessa (jamais modifiee ici).
+ * IDs des collections et buckets Appwrite, lus depuis l'environnement (voir env.ts).
+ * `users` est la collection PARTAGÉE avec Vanessa (jamais modifiée ici).
  */
 export const COLLECTIONS = {
-  users: env.collectionUsers,
+  users: env.collections.users,
 
-  agencies: 'tour_agencies',
-  profiles: 'tour_profiles',
-  sites: 'tour_sites',
-  guides: 'tour_guides',
-  offers: 'tour_offers',
-  availabilities: 'tour_availabilities',
-  bookings: 'tour_bookings',
-  payments: 'tour_payments',
-  reviews: 'tour_reviews',
-  favorites: 'tour_favorites',
-  conversations: 'tour_conversations',
-  messages: 'tour_messages',
-  places: 'tour_places',
-  articles: 'tour_articles',
-  notifications: 'tour_notifications',
-  chatUsage: 'tour_chat_usage',
+  agencies: env.collections.agencies,
+  profiles: env.collections.profiles,
+  sites: env.collections.sites,
+  guides: env.collections.guides,
+  offers: env.collections.offers,
+  availabilities: env.collections.availabilities,
+  bookings: env.collections.bookings,
+  payments: env.collections.payments,
+  reviews: env.collections.reviews,
+  favorites: env.collections.favorites,
+  conversations: env.collections.conversations,
+  messages: env.collections.messages,
+  places: env.collections.places,
+  articles: env.collections.articles,
+  notifications: env.collections.notifications,
+  chatUsage: env.collections.chatUsage,
 } as const
 
 export const BUCKETS = {
-  sites: 'tour_sites_media',
-  guides: 'tour_guides_media',
-  articles: 'tour_articles_media',
-  agencies: 'tour_agency_assets',
-  reviews: 'tour_review_photos',
+  sites: env.buckets.sites,
+  guides: env.buckets.guides,
+  articles: env.buckets.articles,
+  agencies: env.buckets.agencies,
+  reviews: env.buckets.reviews,
 } as const
 
 /** IDs des Appwrite Functions (voir .env) */

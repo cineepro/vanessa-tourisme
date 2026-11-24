@@ -1,0 +1,8 @@
+{
+  "name": "tour-reminders",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vanessa Tourisme : rappel la veille de la visite (planifiée chaque jour).",
+  "main": "src/main.js"
+}

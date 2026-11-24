@@ -1,0 +1,8 @@
+{
+  "name": "tour-payment-webhook",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vanessa Tourisme (phase 2) : reçoit les confirmations de paiement mobile money / carte.",
+  "main": "src/main.js"
+}

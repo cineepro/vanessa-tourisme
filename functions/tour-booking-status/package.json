@@ -1,0 +1,8 @@
+{
+  "name": "tour-booking-status",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vanessa Tourisme : confirmer, refuser, annuler, terminer une réservation.",
+  "main": "src/main.js"
+}
