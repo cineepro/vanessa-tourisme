@@ -1,12 +1,16 @@
 // src/config/env.ts — Vanessa Tourisme
 /**
- * Lecture typee des variables d'environnement (prefixe VITE_).
- * Aucune cle secrete ici : tout ce fichier finit dans le bundle public.
+ * Lecture typée des variables d'environnement (préfixe VITE_).
+ * Aucune clé secrète ici : tout ce fichier finit dans le bundle public.
+ *
+ * Les IDs des collections et des buckets sont configurables (comme sur Vanessa) :
+ * si une variable est absente, on utilise l'ID par défaut `tour_...`.
  */
 
 const raw = import.meta.env
 
 const clean = (value: string | undefined): string => (value ?? '').trim()
+const pick = (value: string | undefined, fallback: string): string => clean(value) || fallback
 
 export const env = {
   appwriteEndpoint:
@@ -15,6 +19,36 @@ export const env = {
   databaseId: clean(raw.VITE_APPWRITE_DATABASE_ID),
   /** ID de la collection `users` PARTAGÉE avec Vanessa (même valeur que son .env) */
   collectionUsers: clean(raw.VITE_APPWRITE_COLLECTION_USERS),
+
+  /** IDs des collections tourisme (défaut : tour_...) */
+  collections: {
+    users: clean(raw.VITE_APPWRITE_COLLECTION_USERS),
+    agencies: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_AGENCIES, 'tour_agencies'),
+    profiles: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_PROFILES, 'tour_profiles'),
+    sites: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_SITES, 'tour_sites'),
+    guides: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_GUIDES, 'tour_guides'),
+    offers: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_OFFERS, 'tour_offers'),
+    availabilities: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_AVAILABILITIES, 'tour_availabilities'),
+    bookings: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_BOOKINGS, 'tour_bookings'),
+    payments: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_PAYMENTS, 'tour_payments'),
+    reviews: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_REVIEWS, 'tour_reviews'),
+    favorites: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_FAVORITES, 'tour_favorites'),
+    conversations: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_CONVERSATIONS, 'tour_conversations'),
+    messages: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_MESSAGES, 'tour_messages'),
+    places: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_PLACES, 'tour_places'),
+    articles: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_ARTICLES, 'tour_articles'),
+    notifications: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_NOTIFICATIONS, 'tour_notifications'),
+    chatUsage: pick(raw.VITE_APPWRITE_COLLECTION_TOUR_CHAT_USAGE, 'tour_chat_usage'),
+  },
+
+  /** IDs des buckets de photos (défaut : tour_...) */
+  buckets: {
+    sites: pick(raw.VITE_APPWRITE_BUCKET_TOUR_SITES, 'tour_sites_media'),
+    guides: pick(raw.VITE_APPWRITE_BUCKET_TOUR_GUIDES, 'tour_guides_media'),
+    articles: pick(raw.VITE_APPWRITE_BUCKET_TOUR_ARTICLES, 'tour_articles_media'),
+    agencies: pick(raw.VITE_APPWRITE_BUCKET_TOUR_AGENCIES, 'tour_agency_assets'),
+    reviews: pick(raw.VITE_APPWRITE_BUCKET_TOUR_REVIEWS, 'tour_review_photos'),
+  },
 
   appUrl:
     clean(raw.VITE_APP_URL) ||
@@ -32,45 +66,11 @@ export const env = {
     review: clean(raw.VITE_FN_REVIEW) || 'tour-review',
   },
 
-  /** IDs des collections Appwrite */
-  collections: {
-    users: clean(raw.VITE_APPWRITE_COLLECTION_USERS),
-    agencies: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_AGENCIES) || 'tour_agencies',
-    profiles: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_PROFILES) || 'tour_profiles',
-    sites: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_SITES) || 'tour_sites',
-    guides: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_GUIDES) || 'tour_guides',
-    offers: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_OFFERS) || 'tour_offers',
-    availabilities:
-      clean(raw.VITE_APPWRITE_COLLECTION_TOUR_AVAILABILITIES) || 'tour_availabilities',
-    bookings: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_BOOKINGS) || 'tour_bookings',
-    payments: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_PAYMENTS) || 'tour_payments',
-    reviews: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_REVIEWS) || 'tour_reviews',
-    favorites: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_FAVORITES) || 'tour_favorites',
-    conversations:
-      clean(raw.VITE_APPWRITE_COLLECTION_TOUR_CONVERSATIONS) || 'tour_conversations',
-    messages: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_MESSAGES) || 'tour_messages',
-    places: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_PLACES) || 'tour_places',
-    articles: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_ARTICLES) || 'tour_articles',
-    notifications:
-      clean(raw.VITE_APPWRITE_COLLECTION_TOUR_NOTIFICATIONS) || 'tour_notifications',
-    chatUsage:
-      clean(raw.VITE_APPWRITE_COLLECTION_TOUR_CHAT_USAGE) || 'tour_chat_usage',
-  },
-
-  /** IDs des buckets Storage Appwrite */
-  buckets: {
-    sites: clean(raw.VITE_APPWRITE_BUCKET_TOUR_SITES) || 'tour_sites',
-    guides: clean(raw.VITE_APPWRITE_BUCKET_TOUR_GUIDES) || 'tour_guides',
-    articles: clean(raw.VITE_APPWRITE_BUCKET_TOUR_ARTICLES) || 'tour_articles',
-    agencies: clean(raw.VITE_APPWRITE_BUCKET_TOUR_AGENCIES) || 'tour_agencies',
-    reviews: clean(raw.VITE_APPWRITE_BUCKET_TOUR_REVIEWS) || 'tour_reviews',
-  },
-
   isDev: raw.DEV,
   isProd: raw.PROD,
 } as const
 
-/** Variables obligatoires encore vides (affichees par App.tsx). */
+/** Variables obligatoires encore vides (affichées par App.tsx). */
 export const missingEnv: string[] = [
   !env.projectId && 'VITE_APPWRITE_PROJECT_ID',
   !env.databaseId && 'VITE_APPWRITE_DATABASE_ID',
