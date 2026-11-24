@@ -32,6 +32,40 @@ export const env = {
     review: clean(raw.VITE_FN_REVIEW) || 'tour-review',
   },
 
+  /** IDs des collections Appwrite */
+  collections: {
+    users: clean(raw.VITE_APPWRITE_COLLECTION_USERS),
+    agencies: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_AGENCIES) || 'tour_agencies',
+    profiles: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_PROFILES) || 'tour_profiles',
+    sites: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_SITES) || 'tour_sites',
+    guides: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_GUIDES) || 'tour_guides',
+    offers: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_OFFERS) || 'tour_offers',
+    availabilities:
+      clean(raw.VITE_APPWRITE_COLLECTION_TOUR_AVAILABILITIES) || 'tour_availabilities',
+    bookings: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_BOOKINGS) || 'tour_bookings',
+    payments: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_PAYMENTS) || 'tour_payments',
+    reviews: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_REVIEWS) || 'tour_reviews',
+    favorites: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_FAVORITES) || 'tour_favorites',
+    conversations:
+      clean(raw.VITE_APPWRITE_COLLECTION_TOUR_CONVERSATIONS) || 'tour_conversations',
+    messages: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_MESSAGES) || 'tour_messages',
+    places: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_PLACES) || 'tour_places',
+    articles: clean(raw.VITE_APPWRITE_COLLECTION_TOUR_ARTICLES) || 'tour_articles',
+    notifications:
+      clean(raw.VITE_APPWRITE_COLLECTION_TOUR_NOTIFICATIONS) || 'tour_notifications',
+    chatUsage:
+      clean(raw.VITE_APPWRITE_COLLECTION_TOUR_CHAT_USAGE) || 'tour_chat_usage',
+  },
+
+  /** IDs des buckets Storage Appwrite */
+  buckets: {
+    sites: clean(raw.VITE_APPWRITE_BUCKET_TOUR_SITES) || 'tour_sites',
+    guides: clean(raw.VITE_APPWRITE_BUCKET_TOUR_GUIDES) || 'tour_guides',
+    articles: clean(raw.VITE_APPWRITE_BUCKET_TOUR_ARTICLES) || 'tour_articles',
+    agencies: clean(raw.VITE_APPWRITE_BUCKET_TOUR_AGENCIES) || 'tour_agencies',
+    reviews: clean(raw.VITE_APPWRITE_BUCKET_TOUR_REVIEWS) || 'tour_reviews',
+  },
+
   isDev: raw.DEV,
   isProd: raw.PROD,
 } as const
